@@ -1,154 +1,75 @@
- 
+# Project One: Runtime and Memory Analysis
 
-Runtime Analysis 
+## Runtime Analysis
 
-Assume that n represents the number of courses being loaded into the data structure. A basic operation has a cost of 1 unless it calls another operation with a different running time. The analysis below focuses on loading the file, validating the course data, creating course objects, and inserting those objects into each data structure. 
+Assume that **n** represents the number of courses being loaded into the data structure. A basic operation has a cost of 1 unless it calls another operation with a different running time. The analysis below focuses on loading the file, validating the course data, creating course objects, and inserting those objects into each data structure.
 
- 
+| Data Structure     | Operation                  |           Cost | Executions | Worst-Case Total |
+| ------------------ | -------------------------- | -------------: | ---------: | ---------------: |
+| Vector             | Open a file                |              1 |          1 |             O(1) |
+| Vector             | Read, parse, create course |              1 |          n |             O(n) |
+| Vector             | Validate prerequisites     |              n |          n |            O(n²) |
+| Vector             | Add course                 |              1 |          n |             O(n) |
+| Hash Table         | Open a file                |              1 |          1 |             O(1) |
+| Hash Table         | Read, parse, create course |              1 |          n |             O(n) |
+| Hash Table         | Validate prerequisites     |              n |          n |            O(n²) |
+| Hash Table         | Insert course              | n (worst case) |          n |            O(n²) |
+| Binary Search Tree | Open a file                |              1 |          1 |             O(1) |
+| Binary Search Tree | Read, parse, create course |              1 |          n |             O(n) |
+| Binary Search Tree | Validate prerequisites     |              n |          n |            O(n²) |
+| Binary Search Tree | Insert course              | n (worst case) |          n |            O(n²) |
 
-Data Structure 
+Reading the input file, parsing each line, and creating the course objects requires **O(n)** time because every course must be processed at least once. For this analysis, prerequisite validation assumes that a course's prerequisite numbers may need to be compared with the stored course numbers. In the worst case, this can require examining as many as **n** courses for each of the **n** courses being processed, resulting in **O(n²)** time.
 
-Operation 
+The insertion cost depends on the data structure. Adding a course to the end of a vector is generally efficient. A hash table normally provides fast insertion, but collisions can cause an individual insertion to approach **O(n)** in the worst case. Similarly, inserting into a binary search tree can require **O(n)** time if the tree becomes highly unbalanced. All three structures require approximately **O(n)** memory to store **n** course objects.
 
-Cost 
+## Memory Analysis
 
-Executions 
+The vector, hash table, and binary search tree each require approximately **O(n)** memory because each structure must store all **n** course objects loaded from the input file. The vector stores the course objects sequentially, while the hash table requires additional storage for its table structure and collision handling. The binary search tree also requires additional memory for the links between nodes. Although their internal storage methods differ, their overall memory requirements grow linearly with the number of courses, resulting in **O(n)** space complexity.
 
-Worst-Case Total 
+## Data Structure Evaluation
 
-Vector 
+### Vector
 
-Open a file 
+A vector is straightforward to implement and provides efficient sequential access to the course information. Courses can be added efficiently as the input file is processed. A vector can also satisfy the requirement to display courses in alphanumeric order by sorting the course objects according to their course numbers.
 
-1 
+The disadvantage is that an unsorted vector requires **O(n)** time in the worst case to locate a particular course because the program may need to examine every course. In addition, the vector must be sorted before the complete course list can be displayed in order. Using an efficient comparison-based sorting algorithm generally requires **O(n log n)** time.
 
-1 
+### Hash Table
 
-O (1) 
+A hash table is useful for quickly finding an individual course because the course number can serve as the key. Searching and insertion generally have an average running time close to **O(1)** when the hash table is well designed and collisions are limited.
 
-Vector 
+The main disadvantage for the ABCU Course Planner is that a hash table does not naturally maintain courses in alphanumeric order. To print the complete course list from lowest to highest course number, the program would need to retrieve the courses and sort them separately. Hash collisions can also reduce performance, and in the worst case searching or insertion can approach **O(n)**.
 
-Read, Parse, Create course 
+### Binary Search Tree
 
-1 
+A binary search tree organizes course objects according to their course numbers. When the tree is reasonably balanced, searching and insertion generally require **O(log n)** time.
 
-n 
+An important advantage for the ABCU Course Planner is that an **in-order traversal** visits the course numbers from lowest to highest. This means the program can display the complete alphanumerically ordered course list in **O(n)** traversal time without performing a separate sorting operation.
 
-O (n) 
+The primary disadvantage is that a basic binary search tree is not guaranteed to remain balanced. If courses are inserted in an order that causes the tree to become skewed, searching and insertion can degrade to **O(n)** in the worst case.
 
-Vector 
+## Recommendation
 
-Validate prerequisites 
+I recommend using a **binary search tree** for the ABCU Course Planner. The advisors require the program to perform two important tasks: locate and display information for an individual course and display all Computer Science courses in alphanumeric order.
 
-n 
+A reasonably balanced binary search tree provides approximately **O(log n)** search and insertion performance. More importantly, an in-order traversal naturally produces the courses in ascending course-number order and requires **O(n)** time to visit all courses. A vector can also produce an ordered course list, but it requires sorting and may require **O(n)** time to search for an individual course. A hash table provides excellent average search performance, but it does not naturally maintain the courses in sorted order.
 
-n 
+For these requirements, the binary search tree provides the best overall balance between searching for individual courses and displaying the complete course list in alphanumeric order (OpenDSA, n.d.-a).
 
-O(n²) 
+## References
 
- 
+Massachusetts Institute of Technology. (2008). *Introduction to algorithms: Lecture notes*. MIT OpenCourseWare.
+https://ocw.mit.edu/courses/6-006-introduction-to-algorithms-spring-2008/pages/lecture-notes/
 
-Vector 
+OpenDSA. (n.d.-a). *Binary search trees*. Virginia Tech.
+https://opendsa.org/OpenDSA/Books/Catalog/html/BST.html
 
-Add course 
+OpenDSA. (n.d.-b). *Space bounds*. Virginia Tech.
+https://opendsa-server.cs.vt.edu/ODSA/Books/eu/dsa/spring-2025/EU/html/AnalSpace.html
 
-1 
 
-n 
 
-O (n) 
-
-Hash Table 
-
-Open a file  
-
-1 
-
-1 
-
-O (1) 
-
-Hash Table 
-
-Read, parse, create course 
-
-1 
-
-n 
-
-O (n) 
-
-Hash Table 
-
-Validate prerequisites 
-
- 
-
- 
-
-n 
-
-n 
-
- 
-
-O(n²) 
-
- 
-
-Hash Table  
-
-Insert course 
-
-n (worse case) 
-
-n 
-
-O(n²) 
-
- 
-
-Binary search tree 
-
-Open a file  
-
-1 
-
-1 
-
-O (1) 
-
-Binary search tree 
-
-Read, parse, create course 
-
-1 
-
-n 
-
-O (n) 
-
-Binary search tree 
-
-Validate prerequisites 
-
-n 
-
-n 
-
-O(n²) 
-
- 
-
-Binary search tree 
-
-Insert course 
-
-n (worst case) 
-
-n 
-
-O(n²) 
 
  
 
@@ -170,58 +91,6 @@ O(n²)
 
  
 
-Reading the input file, parsing each line, and creating the course objects requires O(n) time because every course must be processed at least once. For this analysis, prerequisite validation assumes that a course's prerequisite numbers may need to be compared with the stored course numbers. In the worst case, this can require examining as many as n courses for each of the n courses being processed, resulting in O(n²) time. 
-
-The insertion cost depends on the data structure. Adding a course to the end of a vector is generally efficient. A hash table normally provides fast insertion, but collisions can cause an individual insertion to approach O(n) in the worst case. Similarly, inserting into a binary search tree can require O(n) time if the tree becomes highly unbalanced. All three structures require approximately O(n) memory to store n course objects. 
 
  
 
-Memory Analysis: 
-
-The vector, hash table, and binary search tree each require approximately O(n) memory because each structure must store all n course objects loaded from the input file. The vector stores the course objects sequentially, while the hash table requires additional storage for its table structure and collision handling. The binary search tree also requires additional memory for the links between nodes. Although their internal storage methods differ, their overall memory requirements grow linearly with the number of courses, resulting in O(n) space complexity. 
-
- 
-
-Data Structure Evaluation 
-
-Vector 
-
-A vector is straightforward to implement and provides efficient sequential access to the course information. Courses can be added efficiently as the input file is processed. A vector can also satisfy the requirement to display courses in alphanumeric order by sorting the course objects according to their course numbers. 
-
-The disadvantage is that an unsorted vector requires O(n) time in the worst case to locate a particular course because the program may need to examine every course. In addition, the vector must be sorted before the complete course list can be displayed in order. Using an efficient comparison-based sorting algorithm generally requires O(n log n) time. 
-
-Hash Table 
-
-A hash table is useful for quickly finding an individual course because the course number can serve as the key. Searching and insertion generally have an average running time close to O(1) when the hash table is well designed and collisions are limited. 
-
-The main disadvantage for the ABCU Course Planner is that a hash table does not naturally maintain courses in alphanumeric order. To print the complete course list from lowest to highest course number, the program would need to retrieve the courses and sort them separately. Hash collisions can also reduce performance, and in the worst case searching or insertion can approach O(n). 
-
-Binary Search Tree 
-
-A binary search tree organizes course objects according to their course numbers. When the tree is reasonably balanced, searching and insertion generally require O(log n) time. 
-
-An important advantage for the ABCU Course Planner is that an in-order traversal visits the course numbers from lowest to highest. This means the program can display the complete alphanumerically ordered course list in O(n) traversal time without performing a separate sorting operation. 
-
-The primary disadvantage is that a basic binary search tree is not guaranteed to remain balanced. If courses are inserted in an order that causes the tree to become skewed, searching and insertion can degrade to O(n) in the worst case. 
-
-Recommendation 
-
-I recommend using a binary search tree for the ABCU Course Planner. The advisors require the program to perform two important tasks: locate and display information for an individual course and display all Computer Science courses in alphanumeric order. 
-
-A reasonably balanced binary search tree provides approximately O(log n) search and insertion performance. More importantly, an in-order traversal naturally produces the courses in ascending course-number order and requires O(n) time to visit all courses. A vector can also produce an ordered course list, but it requires sorting and may require O(n) time to search for an individual course. A hash table provides excellent average search performance, but it does not naturally maintain the courses in sorted order. 
-
-For these requirements, the binary search tree provides the best overall balance between searching for individual courses and displaying the complete course list in alphanumeric order (OpenDSA, n.d.-a; OpenDSA, n.d.-b). 
-
-References 
-
-Massachusetts Institute of Technology. (2008). Introduction to algorithms: Lecture notes. MIT OpenCourseWare. 
- https://ocw.mit.edu/courses/6-006-introduction-to-algorithms-spring-2008/pages/lecture-notes/ 
-
-OpenDSA. (n.d.-a). Binary search trees. Virginia Tech .https://opendsa.org/OpenDSA/Books/Catalog/html/BST.html 
-
- 
- OpenDSA. (n.d.). Space bounds. Virginia Tech  https://opendsa-server.cs.vt.edu/ODSA/Books/eu/dsa/spring-2025/EU/html/AnalSpace.html 
-
- 
-
- 
